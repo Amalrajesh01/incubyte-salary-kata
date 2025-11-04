@@ -10,5 +10,6 @@ import com.incubyte.model.Employee;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	List<Employee> findByCountry(String country);
+	List<Employee> findByJobTitle(String jobTitle);
 
 }

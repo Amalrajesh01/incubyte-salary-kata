@@ -38,4 +38,17 @@ public class SalaryMetricsService {
     }
 
     public static record SalaryStats(double min, double max, double avg) {}
+    
+    public double getAverageSalaryByJobTitle(String jobTitle) {
+        List<Employee> employees = employeeRepository.findByJobTitle(jobTitle);
+        if (employees == null || employees.isEmpty()) {
+            throw new IllegalArgumentException("No employees found for job title: " + jobTitle);
+        }
+
+        return employees.stream()
+                .mapToDouble(Employee::getSalary)
+                .average()
+                .orElse(0.0);
+    }
+
 }
