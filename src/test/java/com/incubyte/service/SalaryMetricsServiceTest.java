@@ -39,4 +39,25 @@ class SalaryMetricsServiceTest {
         assertEquals(100000.0, stats.avg());
         verify(employeeRepository, times(1)).findByCountry("India");
     }
+    
+    @Test
+    void shouldReturnAverageSalaryForJobTitle() {
+        // given
+        String jobTitle = "Engineer";
+        List<Employee> employees = Arrays.asList(
+                new Employee(1L, "Amal", "Engineer", "India", 80000.0),
+                new Employee(2L, "John", "Engineer", "USA", 100000.0),
+                new Employee(3L, "Priya", "Engineer", "India", 120000.0)
+        );
+
+        when(employeeRepository.findByJobTitle(jobTitle)).thenReturn(employees);
+
+        // when
+        double avgSalary = salaryMetricsService.getAverageSalaryByJobTitle(jobTitle);
+
+        // then
+        assertEquals(100000.0, avgSalary);
+        verify(employeeRepository, times(1)).findByJobTitle(jobTitle);
+    }
+
 }
