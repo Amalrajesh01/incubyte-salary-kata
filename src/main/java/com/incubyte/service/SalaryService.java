@@ -16,6 +16,9 @@ public class SalaryService {
 
         return new SalaryBreakdown(country, grossSalary, tds, netSalary);
     }
+    public double calculateNetSalary(String country, double grossSalary) {
+        return calculateSalary(country, grossSalary).net();
+    }
 
     private double getDeductionRate(String country) {
         if (country.equalsIgnoreCase("India")) return 0.10;
