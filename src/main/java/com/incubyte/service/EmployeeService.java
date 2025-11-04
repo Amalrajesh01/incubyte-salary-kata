@@ -33,8 +33,13 @@ public class EmployeeService {
     }
     
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        List<Employee> employees = employeeRepository.findAll();
+        if (employees.isEmpty()) {
+            throw new IllegalStateException("No employees found");
+        }
+        return employees;
     }
+
 
     private void validateEmployee(Employee employee) {
         if (employee == null) {
