@@ -1,10 +1,12 @@
 package com.incubyte.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.incubyte.model.Employee;
 import com.incubyte.repository.EmployeeRepository;
-import org.springframework.util.StringUtils;
 
 @Service
 public class EmployeeService {
@@ -28,6 +30,10 @@ public class EmployeeService {
         }
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + id));
+    }
+    
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
     }
 
     private void validateEmployee(Employee employee) {
