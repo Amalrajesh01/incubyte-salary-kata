@@ -47,6 +47,7 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
     @GetMapping
     public ResponseEntity<?> getAllEmployees() {
         try {
@@ -56,7 +57,7 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
         try {
@@ -67,7 +68,4 @@ public class EmployeeController {
         }
     }
 
-
-
 }
-
