@@ -2,17 +2,15 @@ package com.incubyte.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.http.MediaType;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -56,4 +54,20 @@ class EmployeeControllerTest {
 				.andExpect(jsonPath("$.jobTitle").value("Engineer")).andExpect(jsonPath("$.country").value("India"))
 				.andExpect(jsonPath("$.salary").value(90000.0));
 	}
+	
+	@Test
+    void shouldReturnAllEmployees() throws Exception {
+        List<Employee> employees = List.of(
+                new Employee(1L, "Amal Rajesh", "Engineer", "India", 80000.0),
+                new Employee(2L, "John Doe", "Manager", "USA", 120000.0)
+        );
+
+        when(employeeService.getAllEmployees()).thenReturn(employees);
+
+        mockMvc.perform(get("/employees").contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(2))
+                .andExpect(jsonPath("$[0].fullName").value("Amal Rajesh"))
+                .andExpect(jsonPath("$[1].country").value("USA"));
+    }
 }
