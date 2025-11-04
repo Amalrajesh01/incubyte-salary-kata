@@ -40,6 +40,27 @@ public class EmployeeService {
         return employees;
     }
 
+    public Employee updateEmployee(Long id, Employee updated) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid employee ID");
+        }
+        // For PUT, we require a complete, valid representation.
+        validateEmployee(updated);
+
+        Employee existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + id));
+
+        applyUpdates(existing, updated);
+        return employeeRepository.save(existing);
+    }
+
+    private void applyUpdates(Employee target, Employee source) {
+        target.setFullName(source.getFullName());
+        target.setJobTitle(source.getJobTitle());
+        target.setCountry(source.getCountry());
+        target.setSalary(source.getSalary());
+    }
+
 
     private void validateEmployee(Employee employee) {
         if (employee == null) {
