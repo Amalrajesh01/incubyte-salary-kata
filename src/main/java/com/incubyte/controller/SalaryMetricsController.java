@@ -24,5 +24,4 @@ public class SalaryMetricsController {
     public ResponseEntity<Double> getAverageSalaryByJobTitle(@PathVariable String title) {
         return ResponseEntity.ok(salaryMetricsService.getAverageSalaryByJobTitle(title));
     }
-
 }
