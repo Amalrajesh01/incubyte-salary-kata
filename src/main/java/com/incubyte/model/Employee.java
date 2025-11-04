@@ -1,23 +1,10 @@
 package com.incubyte.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Table(name = "employees")
+@Entity
 public class Employee {
 
     @Id
@@ -25,18 +12,28 @@ public class Employee {
     private Long id;
 
     @NotBlank(message = "Full name is required")
-    @Column(nullable = false)
     private String fullName;
 
     @NotBlank(message = "Job title is required")
-    @Column(nullable = false)
     private String jobTitle;
 
     @NotBlank(message = "Country is required")
-    @Column(nullable = false)
     private String country;
 
+    @NotNull(message = "Salary is required")
     @Positive(message = "Salary must be greater than 0")
-    @Column(nullable = false)
     private Double salary;
+
+    // Constructors, getters, setters
+    public Employee() {}
+
+    public Employee(Long id, String fullName, String jobTitle, String country, Double salary) {
+        this.id = id;
+        this.fullName = fullName;
+        this.jobTitle = jobTitle;
+        this.country = country;
+        this.salary = salary;
+    }
+
+    // Getters and Setters omitted for brevity
 }
