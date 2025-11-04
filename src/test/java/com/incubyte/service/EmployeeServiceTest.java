@@ -6,7 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
+import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,5 +77,24 @@ class EmployeeServiceTest {
         assertEquals("Amal Rajesh", result.getFullName());
         verify(employeeRepository, times(1)).findById(employeeId);
     }
+    @Test
+    void shouldReturnAllEmployees() {
+        // given
+        List<Employee> mockEmployees = new ArrayList<>();
+        mockEmployees.add(new Employee(1L, "Amal Rajesh", "Software Engineer", "India", 80000.0));
+        mockEmployees.add(new Employee(2L, "John Doe", "Manager", "USA", 120000.0));
+
+        when(employeeRepository.findAll()).thenReturn(mockEmployees);
+
+        // when
+        List<Employee> result = employeeService.getAllEmployees();
+
+        // then
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Amal Rajesh", result.get(0).getFullName());
+        verify(employeeRepository, times(1)).findAll();
+    }
+
 
 }
