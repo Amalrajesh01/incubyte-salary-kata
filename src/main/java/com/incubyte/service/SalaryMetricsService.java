@@ -40,8 +40,10 @@ public class SalaryMetricsService {
     public static record SalaryStats(double min, double max, double avg) {}
     
     public double getAverageSalaryByJobTitle(String jobTitle) {
+        validateJobTitle(jobTitle);
+
         List<Employee> employees = employeeRepository.findByJobTitle(jobTitle);
-        if (employees == null || employees.isEmpty()) {
+        if (employees.isEmpty()) {
             throw new IllegalArgumentException("No employees found for job title: " + jobTitle);
         }
 
@@ -50,5 +52,12 @@ public class SalaryMetricsService {
                 .average()
                 .orElse(0.0);
     }
+
+    private void validateJobTitle(String jobTitle) {
+        if (jobTitle == null || jobTitle.isBlank()) {
+            throw new IllegalArgumentException("Job title cannot be null or blank");
+        }
+    }
+
 
 }
