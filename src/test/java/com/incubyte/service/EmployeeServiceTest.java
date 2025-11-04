@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -52,4 +54,28 @@ class EmployeeServiceTest {
         assertEquals("Amal Rajesh", result.getFullName());
         verify(employeeRepository, times(1)).save(emp);
     }
+    
+    @Test
+    void shouldReturnEmployeeWhenIdIsValid() {
+        // given
+        Long employeeId = 1L;
+        Employee savedEmp = new Employee();
+        savedEmp.setId(employeeId);
+        savedEmp.setFullName("Amal Rajesh");
+        savedEmp.setJobTitle("Software Engineer");
+        savedEmp.setCountry("India");
+        savedEmp.setSalary(80000.0);
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(savedEmp));
+
+        // when
+        Employee result = employeeService.getEmployeeById(employeeId);
+
+        // then
+        assertNotNull(result);
+        assertEquals(employeeId, result.getId());
+        assertEquals("Amal Rajesh", result.getFullName());
+        verify(employeeRepository, times(1)).findById(employeeId);
+    }
+
 }
