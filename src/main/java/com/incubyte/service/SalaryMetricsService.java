@@ -16,8 +16,9 @@ public class SalaryMetricsService {
         this.employeeRepository = employeeRepository;
     }
 
+    // ✅ Get salary min, max, and average for a country
     public SalaryStats getSalaryStatsByCountry(String country) {
-        validateCountry(country);
+        validate(country, "Country");
 
         List<Employee> employees = employeeRepository.findByCountry(country);
         if (employees.isEmpty()) {
@@ -31,16 +32,9 @@ public class SalaryMetricsService {
         return new SalaryStats(stats.getMin(), stats.getMax(), stats.getAverage());
     }
 
-    private void validateCountry(String country) {
-        if (country == null || country.isBlank()) {
-            throw new IllegalArgumentException("Country cannot be null or blank");
-        }
-    }
-
-    public static record SalaryStats(double min, double max, double avg) {}
-    
+    // ✅ Get average salary for a specific job title
     public double getAverageSalaryByJobTitle(String jobTitle) {
-        validateJobTitle(jobTitle);
+        validate(jobTitle, "Job title");
 
         List<Employee> employees = employeeRepository.findByJobTitle(jobTitle);
         if (employees.isEmpty()) {
@@ -53,11 +47,13 @@ public class SalaryMetricsService {
                 .orElse(0.0);
     }
 
-    private void validateJobTitle(String jobTitle) {
-        if (jobTitle == null || jobTitle.isBlank()) {
-            throw new IllegalArgumentException("Job title cannot be null or blank");
+    // ✅ Generic validator (DRY principle)
+    private void validate(String value, String fieldName) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException(fieldName + " cannot be null or blank");
         }
     }
 
-
+    // ✅ Record for clean return type
+    public static record SalaryStats(double min, double max, double avg) {}
 }

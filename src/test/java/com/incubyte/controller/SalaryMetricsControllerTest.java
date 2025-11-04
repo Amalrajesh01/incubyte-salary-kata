@@ -26,23 +26,23 @@ class SalaryMetricsControllerTest {
 
     @Test
     void shouldReturnCountrySalaryMetrics() throws Exception {
-        when(salaryMetricsService.getCountryMetrics("India"))
-                .thenReturn(new SalaryMetricsService.SalaryStats("India", 50000.0, 150000.0, 100000.0));
+        when(salaryMetricsService.getSalaryStatsByCountry("India"))
+            .thenReturn(new SalaryMetricsService.SalaryStats(50000.0, 150000.0, 100000.0));
 
         mockMvc.perform(get("/metrics/country/India").contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.country").value("India"))
-                .andExpect(jsonPath("$.min").value(50000.0))
-                .andExpect(jsonPath("$.max").value(150000.0))
-                .andExpect(jsonPath("$.average").value(100000.0));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.min").value(50000.0))
+            .andExpect(jsonPath("$.max").value(150000.0))
+            .andExpect(jsonPath("$.avg").value(100000.0)); 
     }
+
 
     @Test
     void shouldReturnAverageSalaryByJobTitle() throws Exception {
-        when(salaryMetricsService.getAverageSalaryByJob("Engineer")).thenReturn(90000.0);
+        when(salaryMetricsService.getAverageSalaryByJobTitle("Engineer")).thenReturn(90000.0);
 
         mockMvc.perform(get("/metrics/job/Engineer").contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("90000.0"));
+            .andExpect(status().isOk())
+            .andExpect(content().string("90000.0"));
     }
 }
