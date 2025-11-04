@@ -4,11 +4,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.util.List;
+import static org.mockito.ArgumentMatchers.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,4 +73,27 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$[0].fullName").value("Amal Rajesh"))
                 .andExpect(jsonPath("$[1].country").value("USA"));
     }
+	@Test
+	void shouldUpdateEmployee() throws Exception {
+	    Long employeeId = 1L;
+
+	    Employee updated = new Employee(employeeId, "Amal Rajesh", "Senior Engineer", "India", 90000.0);
+
+	    when(employeeService.updateEmployee(eq(employeeId), any(Employee.class))).thenReturn(updated);
+
+	    mockMvc.perform(put("/employees/{id}", employeeId)
+	            .contentType(APPLICATION_JSON)
+	            .content("""
+	                {
+	                    "fullName": "Amal Rajesh",
+	                    "jobTitle": "Senior Engineer",
+	                    "country": "India",
+	                    "salary": 90000.0
+	                }
+	            """))
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$.jobTitle").value("Senior Engineer"))
+	            .andExpect(jsonPath("$.salary").value(90000.0));
+	}
+
 }
