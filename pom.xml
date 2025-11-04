@@ -55,6 +55,13 @@
         <optional>true</optional>
     </dependency>
 
+<dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-community-dialects</artifactId>
+    <version>6.6.1.Final</version>
+</dependency>
+
+
     <!-- 🧪 Testing (JUnit 5 + Mockito) -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
