@@ -60,6 +60,18 @@ public class EmployeeService {
         target.setCountry(source.getCountry());
         target.setSalary(source.getSalary());
     }
+    public void deleteEmployee(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Employee ID must be positive");
+        }
+
+        employeeRepository.findById(id)
+                .ifPresentOrElse(
+                    employeeRepository::delete,
+                    () -> { throw new IllegalArgumentException("No employee found with ID: " + id); }
+                );
+    }
+
 
 
     private void validateEmployee(Employee employee) {
