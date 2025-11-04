@@ -14,7 +14,9 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee) {
-        // implement logic in Green phase later
-        return null;
+    	 if (employee == null) {
+             throw new IllegalArgumentException("Employee cannot be null");
+         }
+         return employeeRepository.save(employee);
     }
 }
