@@ -1,12 +1,15 @@
 package com.incubyte.service;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,6 +97,47 @@ class EmployeeServiceTest {
         assertEquals(2, result.size());
         assertEquals("Amal Rajesh", result.get(0).getFullName());
         verify(employeeRepository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldUpdateEmployeeSuccessfully() {
+        // given
+        Long id = 1L;
+
+        Employee existing = new Employee();
+        existing.setId(id);
+        existing.setFullName("Amal Rajesh");
+        existing.setJobTitle("Software Engineer");
+        existing.setCountry("India");
+        existing.setSalary(80000.0);
+
+        Employee incoming = new Employee();
+        incoming.setFullName("Amal R");
+        incoming.setJobTitle("Senior Engineer");
+        incoming.setCountry("India");
+        incoming.setSalary(120000.0);
+
+        Employee saved = new Employee();
+        saved.setId(id);
+        saved.setFullName("Amal R");
+        saved.setJobTitle("Senior Engineer");
+        saved.setCountry("India");
+        saved.setSalary(120000.0);
+
+        when(employeeRepository.findById(id)).thenReturn(java.util.Optional.of(existing));
+        when(employeeRepository.save(any(Employee.class))).thenReturn(saved);
+
+        // when
+        Employee result = employeeService.updateEmployee(id, incoming);
+
+        // then
+        assertNotNull(result);
+        assertEquals(id, result.getId());
+        assertEquals("Amal R", result.getFullName());
+        assertEquals("Senior Engineer", result.getJobTitle());
+        assertEquals(120000.0, result.getSalary());
+        verify(employeeRepository, times(1)).findById(id);
+        verify(employeeRepository, times(1)).save(any(Employee.class));
     }
 
 
