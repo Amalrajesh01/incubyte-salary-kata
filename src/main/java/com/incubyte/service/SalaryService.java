@@ -33,13 +33,10 @@ public class SalaryService {
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + employeeId));
 
         double gross = employee.getSalary();
-        String country = employee.getCountry();
-
-        double deductionRate = getDeductionRate(country);
-        double tds = gross * deductionRate;
+        double tds = gross * getDeductionRate(employee.getCountry());
         double net = gross - tds;
 
-        return new SalaryBreakdown(country, gross, tds, net);
+        return new SalaryBreakdown(employee.getCountry(), gross, tds, net);
     }
 
    
