@@ -21,7 +21,11 @@ public class EmployeeService {
          }
          return employeeRepository.save(employee);
     }
-    
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + id));
+    }
+
     private void validateEmployee(Employee employee) {
         if (employee == null) {
             throw new IllegalArgumentException("Employee cannot be null");
