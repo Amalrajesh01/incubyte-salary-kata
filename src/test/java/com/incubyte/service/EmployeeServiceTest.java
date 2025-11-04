@@ -3,6 +3,7 @@ package com.incubyte.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -141,5 +142,26 @@ class EmployeeServiceTest {
         verify(employeeRepository, times(1)).save(any(Employee.class));
     }
 
+    @Test
+    void shouldDeleteEmployeeSuccessfully() {
+        // given
+        Long id = 1L;
+        Employee existing = new Employee();
+        existing.setId(id);
+        existing.setFullName("Amal Rajesh");
+        existing.setJobTitle("Software Engineer");
+        existing.setCountry("India");
+        existing.setSalary(80000.0);
+
+        when(employeeRepository.findById(id)).thenReturn(Optional.of(existing));
+        doNothing().when(employeeRepository).delete(existing);
+
+        // when
+        employeeService.deleteEmployee(id);
+
+        // then
+        verify(employeeRepository, times(1)).findById(id);
+        verify(employeeRepository, times(1)).delete(existing);
+    }
 
 }
