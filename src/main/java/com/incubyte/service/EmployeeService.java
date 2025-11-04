@@ -15,13 +15,17 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    /** CREATE **/
     public Employee createEmployee(Employee employee) {
-    	 if (employee == null) {
-             throw new IllegalArgumentException("Employee cannot be null");
-         }
-         return employeeRepository.save(employee);
+        validateEmployee(employee);
+        return employeeRepository.save(employee);
     }
+
+    /** READ **/
     public Employee getEmployeeById(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid employee ID");
+        }
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + id));
     }
